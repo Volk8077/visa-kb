@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visa KB — ทีมงาน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--radius:14px;--radius-sm:8px;--shadow-sm:0 1px 4px rgba(0,0,0,.07);--shadow:0 4px 16px rgba(0,0,0,.09);--shadow-lg:0 8px 32px rgba(0,0,0,.13);}
+body{font-family:'Sarabun',sans-serif;background:#f0f2f8;color:#1a1b2e;min-height:100vh;font-size:15px;line-height:1.6;}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#1a1b2e 0%,#2d2f55 100%);padding:0 28px;height:64px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.25);}
+.header-logo{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);padding:5px 12px;border-radius:8px;letter-spacing:1px;}
+.header-title{font-size:14px;color:rgba(255,255,255,.55);font-weight:400;}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.translate-pill{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#1a1b2e;background:linear-gradient(135deg,#ffd200,#f7971e);padding:6px 14px;border-radius:20px;box-shadow:0 2px 8px rgba(247,151,30,.4);}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 64px);}
+
+/* SIDEBAR */
+.sidebar{background:#1a1b2e;padding:20px 14px;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent;}
+.sidebar-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:0 10px;margin-bottom:10px;}
+.country-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:none;background:transparent;border-radius:10px;cursor:pointer;text-align:left;transition:all .18s;margin-bottom:3px;position:relative;overflow:hidden;}
+.country-btn::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .18s;border-radius:10px;}
+.country-btn:hover::before,.country-btn.active::before{opacity:1;}
+.cbtn-AUS::before{background:linear-gradient(135deg,#0057b7,#00a8e8);}
+.cbtn-NZ::before{background:linear-gradient(135deg,#00247d,#3a5bbf);}
+.cbtn-IT::before{background:linear-gradient(135deg,#009246,#20a060);}
+.cbtn-flag{font-size:22px;line-height:1;position:relative;z-index:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));}
+.cbtn-info{flex:1;min-width:0;position:relative;z-index:1;}
+.cbtn-name{font-size:13px;font-weight:600;color:#fff;display:block;}
+.cbtn-type{font-size:11px;color:rgba(255,255,255,.5);display:block;margin-top:1px;}
+.s-divider{height:1px;background:rgba(255,255,255,.08);margin:16px 4px;}
+
+/* DRIVE BUTTONS */
+.drive-btn{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);border-radius:10px;cursor:pointer;text-align:left;transition:all .18s;text-decoration:none;margin-bottom:5px;}
+.drive-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);transform:translateX(2px);}
+.drive-icon-wrap{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.drive-name{font-size:12px;font-weight:600;color:#fff;display:block;}
+.drive-sub{font-size:11px;color:rgba(255,255,255,.4);display:block;margin-top:1px;}
+
+/* FX WIDGET */
+.fx-widget{margin-top:4px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;}
+.fx-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.fx-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);}
+.fx-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.fx-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.fx-row:last-child{border-bottom:none;}
+.fx-pair{font-size:12px;font-weight:600;color:rgba(255,255,255,.45);font-family:'IBM Plex Mono',monospace;}
+.fx-rate{font-size:13px;font-weight:600;color:#ffd200;font-family:'IBM Plex Mono',monospace;}
+.fx-loading{font-size:11px;color:rgba(255,255,255,.3);text-align:center;padding:8px 0;}
+.fx-updated{font-size:10px;color:rgba(255,255,255,.2);text-align:right;margin-top:8px;}
+
+/* MAIN */
+.main{padding:28px 28px 40px;}
+.search-wrap{margin-bottom:24px;position:relative;}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:#9ca3c8;pointer-events:none;}
+.search-input{width:100%;padding:13px 16px 13px 44px;font-size:14px;font-family:'Sarabun',sans-serif;border:2px solid transparent;border-radius:var(--radius);background:#fff;color:#1a1b2e;outline:none;box-shadow:var(--shadow);transition:all .2s;}
+.search-input:focus{border-color:#6366f1;box-shadow:0 0 0 4px rgba(99,102,241,.12),var(--shadow);}
+.search-input::placeholder{color:#b0b4cc;}
+
+/* LEGEND */
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;align-items:center;}
+.legend-label{font-size:12px;color:#8b90b0;margin-right:2px;}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;letter-spacing:.02em;}
+.tag-required{background:#fee2e2;color:#be123c;}
+.tag-optional{background:#d1fae5;color:#065f46;}
+.tag-translate{background:#fef3c7;color:#92400e;border:1.5px dashed #fbbf24;}
+.tag-pdf{background:#dbeafe;color:#1d4ed8;}
+.tag-weprepare{background:#ede9fe;color:#5b21b6;}
+
+/* COUNTRY HERO */
+.country-hero{position:relative;border-radius:20px;padding:28px 28px 24px;margin-bottom:20px;overflow:hidden;box-shadow:var(--shadow-lg);color:#fff;}
+.hero-AUS{background:linear-gradient(135deg,#0057b7 0%,#00a8e8 60%,#00d4aa 100%);}
+.hero-NZ{background:linear-gradient(135deg,#00247d 0%,#1a3fa8 50%,#6e82d0 100%);}
+.hero-IT{background:linear-gradient(135deg,#007a3d 0%,#009246 40%,#20a060 70%,#ce2b37 100%);}
+.hero-bg-pattern{position:absolute;inset:0;background-image:radial-gradient(circle at 80% 20%,rgba(255,255,255,.15) 0%,transparent 50%),radial-gradient(circle at 10% 80%,rgba(255,255,255,.08) 0%,transparent 40%);pointer-events:none;}
+.hero-flag{font-size:52px;line-height:1;margin-bottom:10px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));}
+.hero-name{font-size:26px;font-weight:700;margin-bottom:4px;text-shadow:0 2px 8px rgba(0,0,0,.2);}
+.hero-type{font-size:13px;opacity:.8;font-weight:400;}
+.hero-proc{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(10px);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-left:10px;vertical-align:middle;}
+
+/* PRICING GRID */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.price-card{background:#fff;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s;}
+.price-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.pc-service::before{background:linear-gradient(90deg,#6366f1,#8b5cf6);}
+.pc-visa::before{background:linear-gradient(90deg,#f59e0b,#ef4444);}
+.pc-insurance::before{background:linear-gradient(90deg,#10b981,#06b6d4);}
+.price-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#8b90b0;margin-bottom:6px;}
+.price-main{font-size:18px;font-weight:700;color:#1a1b2e;font-family:'IBM Plex Mono',monospace;line-height:1.2;}
+.price-thb{font-size:12px;color:#6366f1;font-weight:600;margin-top:3px;}
+.price-sub{font-size:11px;color:#b0b4cc;margin-top:4px;}
+.insurance-link{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:#10b981;text-decoration:none;margin-top:6px;transition:gap .15s;}
+.insurance-link:hover{gap:7px;}
+
+/* SECTION CARDS */
+.section-card{background:#fff;border-radius:var(--radius);margin-bottom:12px;box-shadow:var(--shadow-sm);overflow:hidden;transition:box-shadow .18s;}
+.section-card:hover{box-shadow:var(--shadow);}
+.section-head{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;background:linear-gradient(135deg,#f8f9ff,#f0f2f8);border-bottom:1px solid #e8eaf0;}
+.section-title{font-size:13px;font-weight:700;color:#1a1b2e;letter-spacing:.01em;}
+.section-count{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:#fff;border:1px solid #e0e3f0;color:#6b7280;}
+.item-row{display:flex;align-items:flex-start;gap:12px;padding:11px 18px;border-bottom:1px solid #f1f3f8;transition:background .12s;}
+.item-row:last-child{border-bottom:none;}
+.item-row:hover{background:#fafbff;}
+.item-num{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#e0e3f0,#c8ccdf);color:#6b7280;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.item-info{flex:1;min-width:0;}
+.item-name{font-size:14px;font-weight:600;color:#1a1b2e;margin-bottom:2px;}
+.item-detail{font-size:12px;color:#6b7280;line-height:1.5;margin-bottom:5px;}
+.item-tags{display:flex;gap:4px;flex-wrap:wrap;}
+
+/* COPY BUTTON */
+.copy-btn{font-size:11px;font-weight:600;padding:5px 12px;border:1.5px solid #e0e3f0;border-radius:8px;background:#f8f9ff;color:#6b7280;cursor:pointer;white-space:nowrap;flex-shrink:0;margin-top:1px;font-family:'Sarabun',sans-serif;transition:all .15s;}
+.copy-btn:hover{background:#6366f1;border-color:#6366f1;color:#fff;}
+.copy-btn.copied{background:#10b981;border-color:#10b981;color:#fff;}
+
+/* TEMPLATE */
+.template-card{background:linear-gradient(135deg,#f8f9ff,#eef0fc);border-radius:var(--radius);margin-bottom:12px;box-shadow:var(--shadow-sm);overflow:hidden;border:1px solid #e0e3f0;}
+.template-head{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid #e0e3f0;}
+.template-title{font-size:13px;font-weight:700;color:#6366f1;}
+.template-badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;}
+.template-body{padding:16px 18px;display:flex;gap:14px;align-items:flex-start;}
+.template-text{flex:1;font-size:13px;color:#374151;line-height:1.8;white-space:pre-wrap;font-family:'Sarabun',sans-serif;}
+
+/* SERVICE BANNER */
+.service-banner{display:flex;align-items:center;gap:10px;padding:11px 16px;background:linear-gradient(135deg,#fff8e7,#fff3cd);border:1.5px solid #fcd34d;border-radius:12px;margin-bottom:18px;font-size:13px;color:#92400e;box-shadow:0 2px 8px rgba(252,211,77,.2);}
+.service-banner strong{font-weight:700;}
+.no-results{text-align:center;padding:3rem;color:#b0b4cc;font-size:14px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-sm);}
+.result-country-label{padding:8px 18px;font-size:11px;font-weight:700;color:#8b90b0;background:#f8f9ff;border-bottom:1px solid #e8eaf0;text-transform:uppercase;letter-spacing:.06em;}
+.result-count{font-size:13px;color:#6b7280;margin-bottom:12px;}
+
+/* ANIMATIONS */
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.country-hero,.pricing-grid,.section-card,.template-card{animation:fadeIn .25s ease both;}
+.section-card:nth-child(3){animation-delay:.05s;}
+.section-card:nth-child(4){animation-delay:.1s;}
+.section-card:nth-child(5){animation-delay:.15s;}
+
+/* MOBILE */
+@media(max-width:700px){
+  .layout{grid-template-columns:1fr;}
+  .sidebar{position:static;height:auto;padding:14px 12px;display:flex;gap:6px;overflow-x:auto;flex-wrap:nowrap;}
+  .sidebar-label,.s-divider,.fx-widget,.drive-section{display:none;}
+  .country-btn{min-width:80px;flex-direction:column;align-items:center;padding:8px 6px;}
+  .cbtn-type{display:none;}
+  .cbtn-name{font-size:11px;text-align:center;}
+  .main{padding:16px;}
+  .pricing-grid{grid-template-columns:1fr;}
+  .header-title{display:none;}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-logo">VISA KB</div>
+  <span class="header-title">ระบบข้อมูลวีซ่าทีมงาน</span>
+  <div class="header-right">
+    <div class="translate-pill">✦ แปลเอกสาร 250 ฿/หน้า</div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-label">เลือกประเทศ</div>
+    <div id="sidebar-btns"></div>
+
+    <div class="s-divider"></div>
+
+    <div class="drive-section">
+      <div class="sidebar-label">Google Drive</div>
+      <a class="drive-btn" href="https://drive.google.com/drive/folders/1NdjdUmWf289pSNPDq_N3PaiPZGohkmJj?usp=drive_link" target="_blank">
+        <div class="drive-icon-wrap" style="background:linear-gradient(135deg,#0057b7,#00a8e8);">🇦🇺</div>
+        <div><span class="drive-name">AUS &amp; NZ</span><span class="drive-sub">คลิกเปิด Drive ↗</span></div>
+      </a>
+      <a class="drive-btn" href="https://drive.google.com/drive/folders/1fV0c0wKoRK8cpqqV9_al3JGzkKQ4PhWA?usp=drive_link" target="_blank">
+        <div class="drive-icon-wrap" style="background:linear-gradient(135deg,#009246,#ce2b37);">🇮🇹</div>
+        <div><span class="drive-name">Italy</span><span class="drive-sub">คลิกเปิด Drive ↗</span></div>
+      </a>
+    </div>
+
+    <div class="s-divider"></div>
+
+    <div class="fx-widget">
+      <div class="fx-header">
+        <span class="fx-title">อัตราแลกเปลี่ยน</span>
+        <div class="fx-dot"></div>
+      </div>
+      <div id="fx-rates"><div class="fx-loading">กำลังโหลด...</div></div>
+      <div class="fx-updated" id="fx-updated"></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="search" placeholder="ค้นหาเอกสาร เช่น bank statement, ทะเบียนบ้าน..." oninput="doSearch(this.value)">
+    </div>
+    <div class="legend">
+      <span class="legend-label">Tag:</span>
+      <span class="tag tag-required">● required</span>
+      <span class="tag tag-optional">● optional</span>
+      <span class="tag tag-translate">✎ แปลอังกฤษ 250฿/หน้า</span>
+      <span class="tag tag-pdf">↓ PDF</span>
+      <span class="tag tag-weprepare">★ เราเตรียม</span>
+    </div>
+    <div id="main-content"></div>
+  </main>
+</div>
+
+<script>
+const CC={AUS:'cbtn-AUS',NZ:'cbtn-NZ',IT:'cbtn-IT'};
+const HERO={AUS:'hero-AUS',NZ:'hero-NZ',IT:'hero-IT'};
+
+const DB={
+  AUS:{flag:'🇦🇺',name:'Australia',type:'Visitor / Tourist Visa',subtype:'Subclass 600',processing:'20–40 วันทำการ',
+    pricing:{service:'2,500 บาท',visafee:'205 AUD',visaAmt:205,visaCur:'AUD'},
+    sections:[
+      {title:'เอกสารที่ลูกค้าต้องเตรียมและส่งให้เรา',items:[
+        {name:'พาสปอร์ตเล่มปัจจุบัน',detail:'อายุเหลืออย่างน้อย 6 เดือน และมีหน้าว่างอย่างน้อย 2 หน้า — สแกนทุกหน้า',req:true,pdf:true,tr:false,wp:false},
+        {name:'บัตรประชาชน',detail:'สแกนหน้า-หลัง',req:true,pdf:true,tr:false,wp:false},
+        {name:'ทะเบียนบ้าน',detail:'ต้องเป็นภาษาอังกฤษ',req:true,pdf:true,tr:true,wp:false},
+        {name:'Bank Statement',detail:'ย้อนหลัง 6 เดือน — ต้องเป็นภาษาอังกฤษ',req:true,pdf:true,tr:true,wp:false},
+        {name:'จดหมายรับรองการทำงาน',detail:'ต้องเป็นภาษาอังกฤษ (ระบุตำแหน่ง เงินเดือน วันลา)',req:true,pdf:true,tr:true,wp:false},
+        {name:'สลิปเงินเดือน',detail:'ต้องเป็นภาษาอังกฤษ',req:true,pdf:true,tr:true,wp:false},
+        {name:'สัญญาจ้างงาน',detail:'ต้องเป็นภาษาอังกฤษ — หรือใช้เอกสารจดทะเบียนธุรกิจแทน (กรณีทำธุรกิจส่วนตัว)',req:true,pdf:true,tr:true,wp:false},
+        {name:'เอกสารจดทะเบียนธุรกิจ',detail:'สำหรับผู้ที่ทำธุรกิจส่วนตัว — ภาษาอังกฤษ (ใช้แทนสัญญาจ้าง)',req:false,pdf:true,tr:true,wp:false},
+        {name:'Bank Certificate',detail:'สกุลเงิน AUD — หนังสือรับรองจากธนาคาร',req:true,pdf:true,tr:false,wp:false},
+        {name:'ทะเบียนสมรส หรือ ทะเบียนหย่า',detail:'ต้องเป็นภาษาอังกฤษ — เฉพาะผู้ที่แต่งงานแล้ว',req:false,pdf:true,tr:true,wp:false},
+      ]},
+      {title:'เอกสารที่ทีมงานเราเตรียมให้',items:[
+        {name:'Hotel booking',detail:'ใบจองโรงแรมตลอดการเดินทาง',req:true,pdf:true,tr:false,wp:true},
+        {name:'Flight booking',detail:'ใบจองตั๋วเครื่องบิน ไป-กลับ',req:true,pdf:true,tr:false,wp:true},
+        {name:'Trip plan',detail:'แผนการเดินทางระหว่างอยู่ที่ออสเตรเลีย',req:true,pdf:true,tr:false,wp:true},
+        {name:'Travel insurance',detail:'ประกันการเดินทาง ครอบคลุมทั้งทริป',req:true,pdf:true,tr:false,wp:true},
+      ]},
+      {isTemplate:true,template:`สวัสดีค่ะ สำหรับวีซ่าออสเตรเลีย (Tourist) รบกวนเตรียมเอกสารดังนี้เลยนะคะ 🙏\n\n📋 เอกสารที่ต้องส่งให้เรา:\n1. พาสปอร์ตเล่มปัจจุบัน (อายุเหลืออย่างน้อย 6 เดือน + หน้าว่าง 2 หน้า) — สแกนทุกหน้า\n2. บัตรประชาชน (หน้า-หลัง)\n3. ทะเบียนบ้าน\n4. Bank Statement ย้อนหลัง 6 เดือน\n5. จดหมายรับรองการทำงาน + สลิปเงินเดือน + สัญญาจ้าง\n   หรือ เอกสารจดทะเบียนธุรกิจ (กรณีทำธุรกิจส่วนตัว)\n6. Bank Certificate สกุลเงิน AUD\n7. ทะเบียนสมรส / ทะเบียนหย่า — เฉพาะผู้ที่แต่งงานแล้วค่ะ\n\n📝 เอกสารข้อ 3–5 และ 7 ต้องเป็นภาษาอังกฤษค่ะ\nหากยังไม่ได้แปล ทางเรามีบริการแปลเอกสาร 250 บาท/หน้า นะคะ\n\n✅ ส่วนนี้ทีมงานเราจัดเตรียมให้:\nHotel, Flight, Trip Plan และ Insurance\n\n📌 กรุณาส่งเอกสารทุกอย่างเป็นไฟล์ PDF นะคะ`},
+    ]},
+  NZ:{flag:'🇳🇿',name:'New Zealand',type:'Visitor / Tourist Visa',subtype:'Visitor Visa',processing:'15–30 วันทำการ',
+    pricing:{service:'2,500 บาท',visafee:'441 NZD',visaAmt:441,visaCur:'NZD'},
+    sections:[
+      {title:'เอกสารที่ลูกค้าต้องเตรียมและส่งให้เรา',items:[
+        {name:'พาสปอร์ตเล่มปัจจุบัน',detail:'อายุเหลืออย่างน้อย 6 เดือน และมีหน้าว่างอย่างน้อย 2 หน้า — สแกนทุกหน้า',req:true,pdf:true,tr:false,wp:false},
+        {name:'บัตรประชาชน',detail:'สแกนหน้า-หลัง',req:true,pdf:true,tr:false,wp:false},
+        {name:'ทะเบียนบ้าน',detail:'ต้องเป็นภาษาอังกฤษ',req:true,pdf:true,tr:true,wp:false},
+        {name:'Bank Statement',detail:'ย้อนหลัง 6 เดือน — ต้องเป็นภาษาอังกฤษ',req:true,pdf:true,tr:true,wp:false},
+        {name:'จดหมายรับรองการทำงาน',detail:'ต้องเป็นภาษาอังกฤษ (ระบุตำแหน่ง เงินเดือน วันลา)',req:true,pdf:true,tr:true,wp:false},
+        {name:'สลิปเงินเดือน',detail:'ต้องเป็นภาษาอังกฤษ',req:true,pdf:true,tr:true,wp:false},
+        {name:'สัญญาจ้างงาน',detail:'ต้องเป็นภาษาอังกฤษ — หรือใช้เอกสารจดทะเบียนธุรกิจแทน (กรณีทำธุรกิจส่วนตัว)',req:true,pdf:true,tr:true,wp:false},
+        {name:'เอกสารจดทะเบียนธุรกิจ',detail:'สำหรับผู้ที่ทำธุรกิจส่วนตัว — ภาษาอังกฤษ (ใช้แทนสัญญาจ้าง)',req:false,pdf:true,tr:true,wp:false},
+        {name:'Bank Certificate',detail:'สกุลเงิน NZD — หนังสือรับรองจากธนาคาร',req:true,pdf:true,tr:false,wp:false},
+        {name:'ทะเบียนสมรส หรือ ทะเบียนหย่า',detail:'ต้องเป็นภาษาอังกฤษ — เฉพาะผู้ที่แต่งงานแล้ว',req:false,pdf:true,tr:true,wp:false},
+      ]},
+      {title:'เอกสารที่ทีมงานเราเตรียมให้',items:[
+        {name:'Hotel booking',detail:'ใบจองโรงแรมตลอดการเดินทาง',req:true,pdf:true,tr:false,wp:true},
+        {name:'Flight booking',detail:'ใบจองตั๋วเครื่องบิน ไป-กลับ',req:true,pdf:true,tr:false,wp:true},
+        {name:'Trip plan',detail:'แผนการเดินทางระหว่างอยู่ที่นิวซีแลนด์',req:true,pdf:true,tr:false,wp:true},
+        {name:'Travel insurance',detail:'ประกันการเดินทาง ครอบคลุมทั้งทริป',req:true,pdf:true,tr:false,wp:true},
+      ]},
+      {isTemplate:true,template:`สวัสดีค่ะ สำหรับวีซ่านิวซีแลนด์ (Tourist) รบกวนเตรียมเอกสารดังนี้เลยนะคะ 🙏\n\n📋 เอกสารที่ต้องส่งให้เรา:\n1. พาสปอร์ตเล่มปัจจุบัน (อายุเหลืออย่างน้อย 6 เดือน + หน้าว่าง 2 หน้า) — สแกนทุกหน้า\n2. บัตรประชาชน (หน้า-หลัง)\n3. ทะเบียนบ้าน\n4. Bank Statement ย้อนหลัง 6 เดือน\n5. จดหมายรับรองการทำงาน + สลิปเงินเดือน + สัญญาจ้าง\n   หรือ เอกสารจดทะเบียนธุรกิจ (กรณีทำธุรกิจส่วนตัว)\n6. Bank Certificate สกุลเงิน NZD\n7. ทะเบียนสมรส / ทะเบียนหย่า — เฉพาะผู้ที่แต่งงานแล้วค่ะ\n\n📝 เอกสารข้อ 3–5 และ 7 ต้องเป็นภาษาอังกฤษค่ะ\nหากยังไม่ได้แปล ทางเรามีบริการแปลเอกสาร 250 บาท/หน้า นะคะ\n\n✅ ส่วนนี้ทีมงานเราจัดเตรียมให้:\nHotel, Flight, Trip Plan และ Insurance\n\n📌 กรุณาส่งเอกสารทุกอย่างเป็นไฟล์ PDF นะคะ`},
+    ]},
+  IT:{flag:'🇮🇹',name:'Italy (Schengen)',type:'Visitor / Tourist Visa',subtype:'Schengen Type C',processing:'15 วันทำการ',
+    pricing:{service:'2,500 บาท',visafee:'ชำระที่ VFS โดยตรง',visaAmt:null,visaCur:null},
+    sections:[
+      {title:'เอกสารที่ลูกค้าต้องเตรียมและส่งให้เรา',items:[
+        {name:'พาสปอร์ตเล่มปัจจุบัน',detail:'ทุกหน้า — อายุเหลืออย่างน้อย 6 เดือน และมีหน้าว่างอย่างน้อย 2 หน้า',req:true,pdf:true,tr:false,wp:false},
+        {name:'รูปถ่ายหน้าตรง',detail:'ขนาด 3.5 x 4.5 cm พื้นหลังขาว — จำนวน 2 ใบ (ถ่ายไม่เกิน 6 เดือน)',req:true,pdf:false,tr:false,wp:false},
+        {name:'บัตรประชาชน',detail:'สแกนหน้า-หลัง',req:true,pdf:true,tr:false,wp:false},
+        {name:'ทะเบียนบ้าน',detail:'ต้องเป็นภาษาอังกฤษ',req:true,pdf:true,tr:true,wp:false},
+        {name:'Bank Statement',detail:'ย้อนหลัง 6 เดือน — ต้องเป็นภาษาอังกฤษ',req:true,pdf:true,tr:true,wp:false},
+        {name:'จดหมายรับรองการทำงาน',detail:'ต้องเป็นภาษาอังกฤษ (ระบุตำแหน่ง เงินเดือน วันลา)',req:true,pdf:true,tr:true,wp:false},
+        {name:'สลิปเงินเดือน',detail:'ต้องเป็นภาษาอังกฤษ',req:true,pdf:true,tr:true,wp:false},
+        {name:'หนังสือลางาน',detail:'ต้องเป็นภาษาอังกฤษ',req:true,pdf:true,tr:true,wp:false},
+        {name:'เอกสารจดทะเบียนธุรกิจ',detail:'สำหรับผู้ทำธุรกิจส่วนตัว — ภาษาอังกฤษ (ใช้แทนจดหมายรับรองการทำงาน)',req:false,pdf:true,tr:true,wp:false},
+        {name:'Bank Certificate',detail:'สกุลเงิน EUR — หนังสือรับรองจากธนาคาร',req:true,pdf:true,tr:false,wp:false},
+        {name:'ทะเบียนสมรส หรือ ทะเบียนหย่า',detail:'ต้องเป็นภาษาอังกฤษ — เฉพาะผู้ที่แต่งงานแล้ว',req:false,pdf:true,tr:true,wp:false},
+        {name:'บัตรประชาชนคู่สมรส',detail:'สแกนหน้า-หลัง — เฉพาะผู้ที่แต่งงานแล้ว',req:false,pdf:true,tr:false,wp:false},
+      ]},
+      {title:'เอกสารที่ทีมงานเราเตรียมให้',items:[
+        {name:'Hotel booking',detail:'ใบจองโรงแรมตลอดการเดินทาง',req:true,pdf:true,tr:false,wp:true},
+        {name:'Flight booking',detail:'ใบจองตั๋วเครื่องบิน ไป-กลับ',req:true,pdf:true,tr:false,wp:true},
+        {name:'Trip plan',detail:'แผนการเดินทางละเอียดทุกวัน',req:true,pdf:true,tr:false,wp:true},
+        {name:'Travel insurance',detail:'ประกันการเดินทาง ครอบคลุมทั้งทริป คุ้มครองขั้นต่ำ €30,000',req:true,pdf:true,tr:false,wp:true},
+      ]},
+      {isTemplate:true,template:`สวัสดีค่ะ สำหรับวีซ่าอิตาลี (Schengen / Tourist) รบกวนเตรียมเอกสารดังนี้เลยนะคะ 🙏\n\n📋 เอกสารที่ต้องส่งให้เรา:\n1. พาสปอร์ตเล่มปัจจุบัน ทุกหน้า (อายุเหลืออย่างน้อย 6 เดือน + หน้าว่าง 2 หน้า)\n2. รูปถ่ายหน้าตรง 3.5 x 4.5 cm พื้นหลังขาว จำนวน 2 ใบ\n3. บัตรประชาชน (หน้า-หลัง)\n4. ทะเบียนบ้าน\n5. Bank Statement ย้อนหลัง 6 เดือน\n6. จดหมายรับรองการทำงาน + สลิปเงินเดือน + หนังสือลางาน\n   หรือ เอกสารจดทะเบียนธุรกิจ (กรณีทำธุรกิจส่วนตัว)\n7. Bank Certificate สกุลเงิน EUR\n8. ทะเบียนสมรส / ทะเบียนหย่า + บัตรประชาชนคู่สมรส — เฉพาะผู้ที่แต่งงานแล้วค่ะ\n\n📝 เอกสารข้อ 4–6 และ 8 ต้องเป็นภาษาอังกฤษค่ะ\nหากยังไม่ได้แปล ทางเรามีบริการแปลเอกสาร 250 บาท/หน้า นะคะ\n\n✅ ส่วนนี้ทีมงานเราจัดเตรียมให้:\nHotel, Flight, Trip Plan และ Insurance (คุ้มครองขั้นต่ำ €30,000)\n\n📌 กรุณาส่งเอกสารทุกอย่างเป็นไฟล์ PDF นะคะ`},
+    ]},
+};
+
+let active='AUS',searchMode=false,fxRates={};
+
+async function fetchFX(){
+  try{
+    const r=await fetch('https://api.exchangerate-api.com/v4/latest/THB');
+    const d=await r.json();
+    fxRates={AUD:d.rates.AUD?+(1/d.rates.AUD).toFixed(2):null,NZD:d.rates.NZD?+(1/d.rates.NZD).toFixed(2):null};
+    document.getElementById('fx-rates').innerHTML=[{p:'1 AUD',k:'AUD'},{p:'1 NZD',k:'NZD'}].map(x=>`
+      <div class="fx-row"><span class="fx-pair">${x.p}</span><span class="fx-rate">${fxRates[x.k]?'≈ '+fxRates[x.k].toLocaleString()+' ฿':'–'}</span></div>`).join('');
+    document.getElementById('fx-updated').textContent='live · '+new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
+    renderCountry(active);
+  }catch(e){document.getElementById('fx-rates').innerHTML='<div class="fx-loading">โหลดไม่ได้</div>';}
+}
+
+function thbAmt(amt,cur){
+  if(!amt||!cur||!fxRates[cur])return'';
+  return`<div class="price-thb">≈ ${Math.round(amt*fxRates[cur]).toLocaleString()} บาท</div>`;
+}
+
+function renderSidebar(){
+  document.getElementById('sidebar-btns').innerHTML=Object.keys(DB).map(k=>{
+    const c=DB[k],isA=k===active&&!searchMode;
+    return`<button class="country-btn ${CC[k]}${isA?' active':''}" onclick="setCountry('${k}')">
+      <span class="cbtn-flag">${c.flag}</span>
+      <span class="cbtn-info"><span class="cbtn-name">${c.name}</span><span class="cbtn-type">${c.type}</span></span>
+    </button>`;
+  }).join('');
+}
+
+function setCountry(k){active=k;searchMode=false;document.getElementById('search').value='';renderSidebar();renderCountry(k);}
+
+function copyText(text,btn){
+  navigator.clipboard.writeText(text).then(()=>{btn.textContent='✓ Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied')},2000);}).catch(()=>{
+    const t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);
+    btn.textContent='✓ Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied')},2000);
+  });
+}
+
+function renderItem(item,i){
+  const rT=item.req?'<span class="tag tag-required">● required</span>':'<span class="tag tag-optional">● optional</span>';
+  const pT=item.pdf&&!item.wp?'<span class="tag tag-pdf">↓ PDF</span>':'';
+  const tT=item.tr?'<span class="tag tag-translate">✎ แปลอังกฤษ 250฿/หน้า</span>':'';
+  const wT=item.wp?'<span class="tag tag-weprepare">★ เราเตรียม</span>':'';
+  const v=item.name+': '+item.detail;
+  return`<div class="item-row">
+    <div class="item-num">${i+1}</div>
+    <div class="item-info">
+      <div class="item-name">${item.name}</div>
+      <div class="item-detail">${item.detail}</div>
+      <div class="item-tags">${rT}${pT}${tT}${wT}</div>
+    </div>
+    <button class="copy-btn" onclick="copyText(${JSON.stringify(v)},this)">Copy</button>
+  </div>`;
+}
+
+function renderCountry(k){
+  const c=DB[k],p=c.pricing;
+  const html=
+    `<div class="service-banner">✦ <span><strong>บริการแปลเอกสาร</strong> — 250 บาท/หน้า &nbsp;·&nbsp; เอกสารที่มี tag <span class="tag tag-translate" style="font-size:10px;vertical-align:middle">✎ แปลอังกฤษ</span> แจ้งลูกค้าได้เลยค่ะ</span></div>`+
+    `<div class="country-hero ${HERO[k]}"><div class="hero-bg-pattern"></div><div class="hero-flag">${c.flag}</div><div class="hero-name">${c.name}<span class="hero-proc">${c.processing}</span></div><div class="hero-type">${c.type} · ${c.subtype}</div></div>`+
+    `<div class="pricing-grid">
+      <div class="price-card pc-service"><div class="price-label">ค่าจัดเตรียมเอกสาร</div><div class="price-main">${p.service}</div><div class="price-sub">ค่าบริการของเรา</div></div>
+      <div class="price-card pc-visa"><div class="price-label">Visa fee</div><div class="price-main">${p.visafee}</div>${thbAmt(p.visaAmt,p.visaCur)}<div class="price-sub">ค่าธรรมเนียมวีซ่า</div></div>
+      <div class="price-card pc-insurance"><div class="price-label">ค่าประกันการเดินทาง</div><div class="price-main" style="font-size:14px;font-family:'Sarabun',sans-serif">ขึ้นอยู่กับระยะเวลา</div><a class="insurance-link" href="https://allianz-assistance.co.th/travel/" target="_blank">ดูราคา Allianz →</a></div>
+    </div>`+
+    c.sections.map(s=>{
+      if(s.isTemplate)return`<div class="template-card"><div class="template-head"><span class="template-title">💬 ข้อความแจ้งลูกค้า</span><span class="template-badge">คัดลอกได้เลย</span></div><div class="template-body"><div class="template-text">${s.template}</div><button class="copy-btn" onclick="copyText(${JSON.stringify(s.template)},this)">Copy</button></div></div>`;
+      const req=s.items.filter(i=>i.req).length,opt=s.items.filter(i=>!i.req).length,isWe=s.items[0]&&s.items[0].wp;
+      return`<div class="section-card"><div class="section-head"><span class="section-title">${isWe?'📦':'📄'} ${s.title}</span><span class="section-count">${isWe?s.items.length+' รายการ':req+' required'+(opt?' · '+opt+' optional':'')}</span></div>${s.items.map((item,i)=>renderItem(item,i)).join('')}</div>`;
+    }).join('');
+  document.getElementById('main-content').innerHTML=html;
+}
+
+function doSearch(q){
+  q=q.trim().toLowerCase();
+  if(!q){searchMode=false;renderSidebar();renderCountry(active);return;}
+  searchMode=true;renderSidebar();
+  let results=[];
+  Object.keys(DB).forEach(k=>{DB[k].sections.forEach(s=>{if(s.isTemplate)return;s.items.forEach(item=>{if(item.name.toLowerCase().includes(q)||item.detail.toLowerCase().includes(q))results.push({flag:DB[k].flag,country:DB[k].name,item});});});});
+  const el=document.getElementById('main-content');
+  if(!results.length){el.innerHTML=`<div class="no-results">🔍 ไม่พบ "${q}"</div>`;return;}
+  el.innerHTML=`<div class="result-count">พบ ${results.length} รายการ</div>`+results.map((r,i)=>`<div class="section-card"><div class="result-country-label">${r.flag} ${r.country}</div>${renderItem(r.item,0)}</div>`).join('');
+}
+
+renderSidebar();
+renderCountry('AUS');
+fetchFX();
+</script>
+</body>
+</html>
